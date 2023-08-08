@@ -46,21 +46,6 @@ func notFoundHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "<h1>404 page not found</h1>")
 }
 
-type Router struct{}
-
-func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		homeHandlerFunc(w, r)
-	case "/contact":
-		contactHandlerFunc(w, r)
-	case "/faq":
-		faqHandlerFunc(w, r)
-	default:
-		notFoundHandlerFunc(w, r)
-	}
-}
-
 func main() {
 	r := chi.NewRouter()
 	r.Get("/", homeHandlerFunc)
