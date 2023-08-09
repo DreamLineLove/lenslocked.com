@@ -1,17 +1,16 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"html/template"
-	"os"
+	"net/http"
+	// "os"
 )
 
 type User struct {
 	Name string
-	Age  int
-	Meta struct {
-		Visits int
-	}
+	Text string
+	Html template.HTML
 }
 
 func main() {
@@ -22,15 +21,19 @@ func main() {
 
 	user := User{
 		Name: "Zwe Nyan Zaw",
-		Age:  111,
-		Meta: struct {
-			Visits int
-		}{
-			Visits: 50,
-		},
+		Text: `<script>alert("This is a very nefarious attack");</script>`,
+		Html: `<script>alert("This is expected to run");</script>`,
 	}
 
-	err = t.Execute(os.Stdout, user)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		err = t.Execute(w, user)
+		if err != nil {
+			panic(err)
+		}
+	})
+
+	fmt.Println("Starting the server on :3030")
+	err = http.ListenAndServe(":3030", nil)
 	if err != nil {
 		panic(err)
 	}
