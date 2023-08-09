@@ -16,14 +16,14 @@ func executeTemplate(w http.ResponseWriter, filepath string) {
 
 	tpl, err := template.ParseFiles(filepath)
 	if err != nil {
-		log.Printf("happened when parsing template files: %v", err)
+		log.Printf("Happened when parsing template files: %v", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
 	err = tpl.Execute(w, nil)
 	if err != nil {
-		log.Printf("happened when executing the template: %v", err)
+		log.Printf("Happened when executing the template: %v", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
