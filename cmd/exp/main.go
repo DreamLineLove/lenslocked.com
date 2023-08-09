@@ -8,9 +8,10 @@ import (
 )
 
 type User struct {
-	Name string
-	Text string
-	Html template.HTML
+	Name   string
+	Text   string
+	Html   template.HTML
+	Visits int
 }
 
 func main() {
@@ -20,9 +21,10 @@ func main() {
 	}
 
 	user := User{
-		Name: "Zwe Nyan Zaw",
-		Text: `<script>alert("This is a very nefarious attack");</script>`,
-		Html: `<script>alert("This is expected to run");</script>`,
+		Name:   "Zwe Nyan Zaw",
+		Text:   `<script>alert("This is a very nefarious attack");</script>`,
+		Html:   `<script>alert("This is expected to run");</script>`,
+		Visits: 100,
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

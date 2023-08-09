@@ -1,3 +1,12 @@
 <h1>Hello, {{.Name}}</h1>
 <h2>Your text is {{.Text}}</h2>
 <p>Your html is {{.Html}}</p>
+
+<script>
+  const data = {
+    "text": {{.Text}},
+    "html": {{.Html}},
+    "visits": {{.Visits}}
+  };
+  console.log("The data is", data.text, data.html, data.visits);
+</script>
