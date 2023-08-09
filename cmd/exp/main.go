@@ -26,6 +26,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html, charset=utf-8")
 		err = t.Execute(w, user)
 		if err != nil {
 			panic(err)
