@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	// "os"
+	"os"
 )
 
 type User struct {
@@ -33,6 +33,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		err = t.Execute(os.Stdout, user)
 	})
 
 	fmt.Println("Starting the server on :3030")
