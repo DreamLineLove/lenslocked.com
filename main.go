@@ -11,27 +11,32 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func homeHandlerFunc(w http.ResponseWriter, r *http.Request) {
+func executeTemplate(w http.ResponseWriter, filepath string) {
 	w.Header().Set("Content-Type", "text/html, charset=utf-8")
 
-	tpl, err := template.ParseFiles(filepath.Join("templates", "home.gohtml"))
+	tpl, err := template.ParseFiles(filepath)
 	if err != nil {
-		log.Printf("happened when parsing template files: %v", tpl)
-		http.Error(w, "Error when parsing template files", http.StatusInternalServerError)
+		log.Printf("happened when parsing template files: %v", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
 	err = tpl.Execute(w, nil)
 	if err != nil {
 		log.Printf("happened when executing the template: %v", err)
-		http.Error(w, "Error when executing the template", http.StatusInternalServerError)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 }
 
+func homeHandlerFunc(w http.ResponseWriter, r *http.Request) {
+	tplPath := filepath.Join("templates", "home.gohtml")
+	executeTemplate(w, tplPath)
+}
+
 func contactHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html, charset=utf-8")
-	fmt.Fprint(w, "<h1>Contact Page</h1><p>To get in touch, email me at <a href=\"mailto:zwenyanzaw@protonmail.com\">zwenyanzaw@protonmail.com</a>.")
+	tplPath := filepath.Join("templates", "contact.gohtml")
+	executeTemplate(w, tplPath)
 }
 
 func faqHandlerFunc(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +69,7 @@ func notFoundHandlerFunc(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := chi.NewRouter()
+
 	r.Get("/", homeHandlerFunc)
 	r.Get("/contact", contactHandlerFunc)
 	r.Get("/faq", faqHandlerFunc)
