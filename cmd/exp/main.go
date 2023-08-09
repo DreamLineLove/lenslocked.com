@@ -6,8 +6,12 @@ import (
 	"os"
 )
 
-type data struct {
-	Language string
+type User struct {
+	Name string
+	Age  int
+	Meta struct {
+		Visits int
+	}
 }
 
 func main() {
@@ -16,14 +20,18 @@ func main() {
 		panic(err)
 	}
 
-	data := struct {
-		Data []data
-	}{
-		Data: []data{
-			data{"German"},
-			data{"English"},
+	user := User{
+		Name: "Zwe Nyan Zaw",
+		Age:  111,
+		Meta: struct {
+			Visits int
+		}{
+			Visits: 50,
 		},
 	}
 
-	t.Execute(os.Stdout, data)
+	err = t.Execute(os.Stdout, user)
+	if err != nil {
+		panic(err)
+	}
 }
