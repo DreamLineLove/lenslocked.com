@@ -36,11 +36,11 @@ func faqHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	executeTemplate(w, filepath.Join("templates", "faq.gohtml"))
 }
 
-func notFoundHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotFound)
-	w.Header().Set("Content-Type", "text/html, charset=utf-8")
-	fmt.Fprint(w, "<h1>404 page not found</h1>")
-}
+// func notFoundHandlerFunc(w http.ResponseWriter, r *http.Request) {
+// 	w.WriteHeader(http.StatusNotFound)
+// 	w.Header().Set("Content-Type", "text/html, charset=utf-8")
+// 	fmt.Fprint(w, "<h1>404 page not found</h1>")
+// }
 
 func main() {
 	r := chi.NewRouter()
@@ -48,7 +48,11 @@ func main() {
 	r.Get("/", homeHandlerFunc)
 	r.Get("/contact", contactHandlerFunc)
 	r.Get("/faq", faqHandlerFunc)
-	r.NotFound(notFoundHandlerFunc)
+	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		w.Header().Set("Content-Type", "text/html, charset=utf-8")
+		fmt.Fprint(w, "<h1>404 page not found</h1>")
+	})
 
 	fmt.Fprintln(os.Stdout, "Starting the server on :3000...")
 
