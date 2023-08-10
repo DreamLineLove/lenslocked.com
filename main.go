@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	// "html/template"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -16,23 +14,9 @@ import (
 func main() {
 	r := chi.NewRouter()
 
-	tpl, err := views.Parse(filepath.Join("templates", "home.gohtml"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	r.Get("/", controllers.StaticHandler(tpl))
-
-	tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	r.Get("/contact", controllers.StaticHandler(tpl))
-
-	tpl, err = views.Parse(filepath.Join("templates", "faq.gohtml"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	r.Get("/faq", controllers.StaticHandler(tpl))
+	r.Get("/", controllers.StaticHandler(views.Must(views.Parse(filepath.Join("templates", "home.gohtml")))))
+	r.Get("/contact", controllers.StaticHandler(views.Must(views.Parse(filepath.Join("templates", "contact.gohtml")))))
+	r.Get("/faq", controllers.StaticHandler(views.Must(views.Parse(filepath.Join("templates", "faq.gohtml")))))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
