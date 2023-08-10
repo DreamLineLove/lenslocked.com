@@ -8,46 +8,32 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/DreamLineLove/lenslocked/controllers"
 	"github.com/DreamLineLove/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 )
 
-func executeTemplate(w http.ResponseWriter, filepath string) {
-	t, err := views.Parse(filepath)
-	if err != nil {
-		log.Printf("when parsing template: %v", err)
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-	t.Execute(w, nil)
-}
-
-func homeHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "home.gohtml")
-	executeTemplate(w, tplPath)
-}
-
-func contactHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "contact.gohtml")
-	executeTemplate(w, tplPath)
-}
-
-func faqHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	executeTemplate(w, filepath.Join("templates", "faq.gohtml"))
-}
-
-// func notFoundHandlerFunc(w http.ResponseWriter, r *http.Request) {
-// 	w.WriteHeader(http.StatusNotFound)
-// 	w.Header().Set("Content-Type", "text/html, charset=utf-8")
-// 	fmt.Fprint(w, "<h1>404 page not found</h1>")
-// }
-
 func main() {
 	r := chi.NewRouter()
 
-	r.Get("/", homeHandlerFunc)
-	r.Get("/contact", contactHandlerFunc)
-	r.Get("/faq", faqHandlerFunc)
+	tpl, err := views.Parse(filepath.Join("templates", "home.gohtml"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	r.Get("/", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	r.Get("/contact", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "faq.gohtml"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	r.Get("/faq", controllers.StaticHandler(tpl))
+
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		w.Header().Set("Content-Type", "text/html, charset=utf-8")
