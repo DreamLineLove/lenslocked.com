@@ -1,19 +1,23 @@
 package controllers
 
 import (
+	"html/template"
 	"net/http"
 
 	"github.com/DreamLineLove/lenslocked/views"
 )
 
-func StaticHandler(tpl views.Template, data interface{}) http.HandlerFunc {
+func StaticHandler(tpl views.Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		tpl.Execute(w, data)
+		tpl.Execute(w, nil)
 	}
 }
 
 func FAQ(tpl views.Template) http.HandlerFunc {
-	data := []faq{
+	questions := []struct {
+		Question string
+		Answer   template.HTML
+	}{
 		{
 			"Q: Is there a free version?",
 			"A: Yes! We offer a free trial for 30 day",
@@ -27,5 +31,7 @@ func FAQ(tpl views.Template) http.HandlerFunc {
 			`A: Email us - <a href="mailto:support@lenslocked.com">support@lenslocked.com`,
 		},
 	}
-
+	return func(w http.ResponseWriter, r *http.Request) {
+		tpl.Execute(w, questions)
+	}
 }
