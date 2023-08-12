@@ -6,8 +6,8 @@ import (
 	"github.com/DreamLineLove/lenslocked/views"
 )
 
-func StaticHandler(tpl views.Template) http.HandlerFunc {
+func StaticHandler(tpl views.Template, data interface{}) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		tpl.Execute(w, nil)
+		tpl.Execute(w, data)
 	}
 }
