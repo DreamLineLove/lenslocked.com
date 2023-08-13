@@ -1,0 +1,15 @@
+{{define "page"}}
+<form action="/users" method="post">
+  <div>
+    <label>Email Address</label>
+    <input type="email" autocomplete="email" required placeholder="type in your email address" />
+  </div>
+  <div>
+    <label>Password</label>
+    <input type="password" required placeholder="give a strong password" />
+  </div>
+  <div>
+    <button type="submit">Sign up</button>
+  </div>
+</form>
+{{end}}

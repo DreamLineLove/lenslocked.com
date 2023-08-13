@@ -1,0 +1,15 @@
+{{define "page"}}
+<form method="post">
+  <div>
+    <label></label>
+    <input />
+  </div>
+  <div>
+    <label></label>
+    <input />
+  </div>
+  <div>
+    <button></button>
+  </div>
+</form>
+{{end}}
