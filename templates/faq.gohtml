@@ -1,9 +1,11 @@
+{{define "page"}}
 <h1>Frequently Asked Questions</h1>
 <ul>
   {{range .}}
     {{template "qa" .}}
   {{end}}
 </ul>
+{{end}}
 
 {{define "qa"}}
 <li>
