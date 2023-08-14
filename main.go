@@ -17,7 +17,10 @@ func main() {
 	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "home.gohtml"))))
 	r.Get("/contact", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "contact.gohtml"))))
 	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "faq.gohtml"))))
-	r.Get("/signup", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "signup.gohtml"))))
+
+	usersC := controllers.Users{}
+	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "signup.gohtml"))
+	r.Get("/signup", usersC.New)
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
