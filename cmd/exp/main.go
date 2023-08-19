@@ -63,7 +63,7 @@ func main() {
 	}
 	fmt.Println("Tables created!")
 
-	id := 2
+	id := 1
 	row := db.QueryRow(`
 		SELECT name, email FROM users 
 		WHERE id=$1;
@@ -78,4 +78,18 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("User information: name=%q email=%q\n", name, email)
+
+	user_id := 1
+	for i := 0; i < 5; i++ {
+		amount := i * 100
+		description := fmt.Sprintf("Fake order #%d", i)
+		_, err := db.Exec(`
+			INSERT INTO orders (user_id, amount, description)
+			VALUES ($1, $2, $3);
+		`, user_id, amount, description)
+		if err != nil {
+			panic(err)
+		}
+	}
+	fmt.Println("Sample orders created!")
 }
