@@ -63,15 +63,17 @@ func main() {
 	}
 	fmt.Println("Tables created!")
 
-	name := "John"
-	email := "john@smith.io"
-	_, err = db.Exec(`
+	name := "Uchiha Itachi"
+	email := "itachi@uchiha.io"
+	row := db.QueryRow(`
 		INSERT INTO users (name, email)
-		VALUES ($1, $2);
+		VALUES ($1, $2) RETURNING id;
 		`,
 		name, email)
+	var id int
+	err = row.Scan(&id)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("User created!")
+	fmt.Printf("User %v created!\n", id)
 }
