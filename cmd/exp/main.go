@@ -93,16 +93,16 @@ func main() {
 	// }
 	// fmt.Println("Sample orders created!")
 
-	user_id := 1
-	for i := 6; i < 11; i++ {
-		amount := (i - 1) * 100
-		description := fmt.Sprintf("Fake order #%d", i-1)
-		_, err := db.Exec(`
-			UPDATE orders SET amount=$1, description=$2 WHERE id=$3 AND user_id=$4;
-		`, amount, description, i, user_id)
-		if err != nil {
-			panic(err)
-		}
-	}
-	fmt.Println("Order details modified!")
+	// user_id := 1
+	// for i := 6; i < 11; i++ {
+	// 	amount := (i - 1) * 100
+	// 	description := fmt.Sprintf("Fake order #%d", i-1)
+	// 	_, err := db.Exec(`
+	// 		UPDATE orders SET amount=$1, description=$2 WHERE id=$3 AND user_id=$4;
+	// 	`, amount, description, i, user_id)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// }
+	// fmt.Println("Order details modified!")
 }
