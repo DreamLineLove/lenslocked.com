@@ -105,4 +105,36 @@ func main() {
 	// 	}
 	// }
 	// fmt.Println("Order details modified!")
+
+	type Order struct {
+		ID          int
+		UserID      int
+		Amount      int
+		Description string
+	}
+	var orders []Order
+	user_id := 1
+
+	rows, err := db.Query(`
+		SELECT id, amount, description FROM orders
+		WHERE user_id=$1;
+		`, user_id)
+	if err != nil {
+		panic(err)
+	}
+
+	for rows.Next() {
+		var order Order
+		order.UserID = user_id
+		err := rows.Scan(&order.ID, &order.Amount, &order.Description)
+		if err != nil {
+			panic(err)
+		}
+		orders = append(orders, order)
+	}
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Sample orders:\n", orders)
 }
