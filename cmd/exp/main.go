@@ -79,17 +79,30 @@ func main() {
 	}
 	fmt.Printf("User information: name=%q email=%q\n", name, email)
 
+	// user_id := 1
+	// for i := 0; i < 5; i++ {
+	// 	amount := i * 100
+	// 	description := fmt.Sprintf("Fake order #%d", i)
+	// 	_, err := db.Exec(`
+	// 		INSERT INTO orders (user_id, amount, description)
+	// 		VALUES ($1, $2, $3);
+	// 	`, user_id, amount, description)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// }
+	// fmt.Println("Sample orders created!")
+
 	user_id := 1
-	for i := 0; i < 5; i++ {
-		amount := i * 100
-		description := fmt.Sprintf("Fake order #%d", i)
+	for i := 6; i < 11; i++ {
+		amount := (i - 1) * 100
+		description := fmt.Sprintf("Fake order #%d", i-1)
 		_, err := db.Exec(`
-			INSERT INTO orders (user_id, amount, description)
-			VALUES ($1, $2, $3);
-		`, user_id, amount, description)
+			UPDATE orders SET amount=$1, description=$2 WHERE id=$3 AND user_id=$4;
+		`, amount, description, i, user_id)
 		if err != nil {
 			panic(err)
 		}
 	}
-	fmt.Println("Sample orders created!")
+	fmt.Println("Order details modified!")
 }
