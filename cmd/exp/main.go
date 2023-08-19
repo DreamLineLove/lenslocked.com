@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -63,17 +64,19 @@ func main() {
 	}
 	fmt.Println("Tables created!")
 
-	name := "Uchiha Itachi"
-	email := "itachi@uchiha.io"
+	id := 2
 	row := db.QueryRow(`
-		INSERT INTO users (name, email)
-		VALUES ($1, $2) RETURNING id;
-		`,
-		name, email)
-	var id int
-	err = row.Scan(&id)
+		SELECT name, email FROM users 
+		WHERE id=$1;
+	`, id)
+
+	var name, email string
+	err = row.Scan(&name, &email)
+	if errors.Is(err, sql.ErrNoRows) {
+		log.Fatal("while scanning row: %w", err)
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("User %v created!\n", id)
+	fmt.Printf("User information: name=%q email=%q\n", name, email)
 }
