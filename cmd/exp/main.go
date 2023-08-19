@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
@@ -34,13 +33,13 @@ func main() {
 
 	db, err := sql.Open("pgx", cfg.String())
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer db.Close()
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	fmt.Println("Connected!")
@@ -60,7 +59,7 @@ func main() {
 		);
 	`)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	fmt.Println("Tables created!")
 
@@ -73,10 +72,10 @@ func main() {
 	var name, email string
 	err = row.Scan(&name, &email)
 	if errors.Is(err, sql.ErrNoRows) {
-		log.Fatal("while scanning row: %w", err)
+		panic(err)
 	}
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	fmt.Printf("User information: name=%q email=%q\n", name, email)
 }
